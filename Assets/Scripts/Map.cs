@@ -21,6 +21,7 @@ public class Map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Create the map with grass tiles
         for (int col = -MAP_RADIUS; col <= MAP_RADIUS; col++)
         {
             for (int row = -MAP_RADIUS; row <= MAP_RADIUS; row++)
@@ -34,48 +35,48 @@ public class Map : MonoBehaviour
             }
         }
 
+        // Put the Town Center in the center of the map
         gameMap[Vector2.zero] = Instantiate(TownCenter, transform);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Update is used for placing buildings, so if the user isn't try to place a building we return
         if (pendingBuilding == null)
             return;
-
-        bool canPlaceBuilding;
 
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 gridPosition = new Vector2(Mathf.Round(mouseWorldPosition.x), Mathf.Round(mouseWorldPosition.y));
         pendingBuilding.transform.position = gridPosition;
 
+        // The building must be within the map and the tile must be empty
         if (gameMap.ContainsKey(gridPosition) && gameMap[gridPosition] == null)
         {
-            canPlaceBuilding = true;
-
             pendingBuildingRenderer.color = validPlacementColor;
-        }
-        else
-        {
-            canPlaceBuilding = false;
 
-            pendingBuildingRenderer.color = invalidPlacementColor;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (canPlaceBuilding)
+            // They clicked and the position is valid so place it!
+            if (Input.GetMouseButtonDown(0))
             {
                 pendingBuildingRenderer.color = Color.white;
                 gameMap[gridPosition] = pendingBuilding;
+
+                pendingBuilding = null;
+                pendingBuildingRenderer = null;
             }
-            else
+        }
+        else // invalid position
+        {
+            pendingBuildingRenderer.color = invalidPlacementColor;
+
+            // If they clicked while in an invalid spot we cancel the placement
+            if (Input.GetMouseButtonDown(0))
             {
                 Destroy(pendingBuilding.gameObject);
-            }
 
-            pendingBuilding = null;
-            pendingBuildingRenderer = null;
+                pendingBuilding = null;
+                pendingBuildingRenderer = null;
+            }
         }
     }
 
