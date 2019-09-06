@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
+    public GameObject FarmPrefab;
+    public GameObject HousePrefab;
+    public GameObject WoodcutterPrefab;
+
     private const int MapRadius = 5;
     private Dictionary<Vector2, GameObject> gameMap = new Dictionary<Vector2, GameObject>();
 
@@ -17,12 +21,26 @@ public class Map : MonoBehaviour
                 gameMap.Add(new Vector2(row, col), null);
             }
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void AddFarm()
+    {
+
+    }
+
+    public void AddHouse()
+    {
+
+    }
+
+    public void AddWoodcutter()
+    {
+
     }
 }
