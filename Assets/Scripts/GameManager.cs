@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _availablePeopleCount = Mathf.Max(value, 0);
-            AvailablePeopleLabel.text = $"Total People: {_availablePeopleCount}";
+            AvailablePeopleLabel.text = $"Available People: {_availablePeopleCount}";
         }
     }
     public int FoodCount
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _foodCount = Mathf.Max(value, 0);
-            FoodLabel.text = $"Total People: {_foodCount}";
+            FoodLabel.text = $"Food: {_foodCount}";
         }
     }
     public int WoodCount
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _woodCount = Mathf.Max(value, 0);
-            WoodLabel.text = $"Total People: {_woodCount}";
+            WoodLabel.text = $"Wood: {_woodCount}";
         }
     }
 
