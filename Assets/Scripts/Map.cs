@@ -11,7 +11,7 @@ public class Map : MonoBehaviour
     public GameObject WoodcutterPrefab;
 
     private const int MAP_RADIUS = 5;
-    private int buildingNumber = 1;
+    private int buildingNumber = 2;
     private Dictionary<Vector2, GameObject> gameMap = new Dictionary<Vector2, GameObject>();
     private GameObject pendingBuilding;
     private SpriteRenderer pendingBuildingRenderer;
@@ -36,7 +36,10 @@ public class Map : MonoBehaviour
         }
 
         // Put the Town Center in the center of the map
-        gameMap[Vector2.zero] = Instantiate(TownCenter, transform);
+        var townCenter = Instantiate(TownCenter, transform);
+        var townCenterRenderer = townCenter.GetComponent<SpriteRenderer>();
+        townCenterRenderer.sortingOrder = buildingNumber++;
+        gameMap[Vector2.zero] = townCenter;
     }
 
     // Update is called once per frame
