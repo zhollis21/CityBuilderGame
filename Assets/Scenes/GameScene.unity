@@ -1079,7 +1079,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Wood Total: '
+  m_Text: 'Wood: '
 --- !u!222 &1421902197
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1397,7 +1397,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Food Total: '
+  m_Text: 'Food: '
 --- !u!222 &1857184179
 CanvasRenderer:
   m_ObjectHideFlags: 0

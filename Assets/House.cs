@@ -7,7 +7,7 @@ public class House : MonoBehaviour
     private int HouseLevel = 1;
     private const int LVL_1_POPULATION = 5;
     private const int LVL_2_POPULATION = 10;
-    private const int LVL_3_POPULATION = 20;
+    private const int LVL_3_POPULATION = 15;
 
     // Start is called before the first frame update
     void Start()
