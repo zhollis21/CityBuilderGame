@@ -46,7 +46,7 @@ public class Map : MonoBehaviour
         if (pendingBuilding == null)
             return;
 
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - Camera.main.transform.position);
         Vector2 gridPosition = new Vector2(Mathf.Round(mouseWorldPosition.x), Mathf.Round(mouseWorldPosition.y));
         pendingBuilding.transform.position = gridPosition;
 
