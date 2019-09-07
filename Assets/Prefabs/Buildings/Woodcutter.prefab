@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7356985516478778497}
   - component: {fileID: 7356985516478778510}
+  - component: {fileID: 1027145479815469766}
   m_Layer: 0
   m_Name: Woodcutter
   m_TagString: Untagged
@@ -80,3 +81,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1027145479815469766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7356985516478778511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b781273f8757145b7108d282671c78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

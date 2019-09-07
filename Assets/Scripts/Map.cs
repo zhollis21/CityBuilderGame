@@ -7,6 +7,7 @@ public class Map : MonoBehaviour
     public GameObject FarmPrefab;
     public GameObject GrassPrefab;
     public GameObject HousePrefab;
+    public GameObject PreviewBuilding;
     public GameObject TownCenter;
     public GameObject WoodcutterPrefab;
 
@@ -14,13 +15,16 @@ public class Map : MonoBehaviour
     private int buildingNumber = 2;
     private Dictionary<Vector2, GameObject> gameMap = new Dictionary<Vector2, GameObject>();
     private GameObject pendingBuilding;
-    private SpriteRenderer pendingBuildingRenderer;
+    private SpriteRenderer previewRenderer;
     private Color validPlacementColor = new Color(.5f, 1, .5f, 0.75f);
     private Color invalidPlacementColor = new Color(1, 0.5f, 0.5f, 0.75f);
 
     // Start is called before the first frame update
     void Start()
     {
+        previewRenderer = PreviewBuilding.GetComponent<SpriteRenderer>();
+        previewRenderer.sprite = null;
+
         // Create the map with grass tiles
         for (int col = -MAP_RADIUS; col <= MAP_RADIUS; col++)
         {
@@ -51,59 +55,63 @@ public class Map : MonoBehaviour
 
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - Camera.main.transform.position);
         Vector2 gridPosition = new Vector2(Mathf.Round(mouseWorldPosition.x), Mathf.Round(mouseWorldPosition.y));
-        pendingBuilding.transform.position = gridPosition;
+        PreviewBuilding.transform.position = gridPosition;
 
         // The building must be within the map and the tile must be empty
         if (gameMap.ContainsKey(gridPosition) && gameMap[gridPosition] == null)
         {
-            pendingBuildingRenderer.color = validPlacementColor;
+            previewRenderer.color = validPlacementColor;
 
             // They clicked and the position is valid so place it!
             if (Input.GetMouseButtonDown(0))
             {
-                pendingBuildingRenderer.color = Color.white;
-                gameMap[gridPosition] = pendingBuilding;
-
-                pendingBuilding = null;
-                pendingBuildingRenderer = null;
+                CreatePendingBuilding(gridPosition);
             }
         }
         else // invalid position
         {
-            pendingBuildingRenderer.color = invalidPlacementColor;
+            previewRenderer.color = invalidPlacementColor;
 
             // If they clicked while in an invalid spot we cancel the placement
             if (Input.GetMouseButtonDown(0))
             {
-                Destroy(pendingBuilding.gameObject);
-
                 pendingBuilding = null;
-                pendingBuildingRenderer = null;
+                previewRenderer.sprite = null;
             }
         }
     }
 
-    public void CreatePendingBuilding(GameObject obj)
+    public void SetPendingBuilding(GameObject obj)
     {
-        pendingBuilding = Instantiate(obj, transform);
+        pendingBuilding = obj;
 
-        pendingBuildingRenderer = pendingBuilding.GetComponent<SpriteRenderer>();
+        previewRenderer.sprite = pendingBuilding.GetComponent<SpriteRenderer>().sprite;
+        previewRenderer.sortingOrder = buildingNumber++;
+    }
 
-        pendingBuildingRenderer.sortingOrder = buildingNumber++;
+    public void CreatePendingBuilding(Vector2 gridPosition)
+    {
+        var building = Instantiate(pendingBuilding);
+        building.transform.position = gridPosition;
+        building.GetComponent<SpriteRenderer>().sortingOrder = buildingNumber++;
+        gameMap[gridPosition] = building;
+
+        pendingBuilding = null;
+        previewRenderer.sprite = null;
     }
 
     public void AddFarm()
     {
-        CreatePendingBuilding(FarmPrefab);
+        SetPendingBuilding(FarmPrefab);
     }
 
     public void AddHouse()
     {
-        CreatePendingBuilding(HousePrefab);
+        SetPendingBuilding(HousePrefab);
     }
 
     public void AddWoodcutter()
     {
-        CreatePendingBuilding(WoodcutterPrefab);
+        SetPendingBuilding(WoodcutterPrefab);
     }
 }
