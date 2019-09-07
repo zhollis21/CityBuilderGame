@@ -11,29 +11,11 @@ public class GameManager : MonoBehaviour
     public Text WoodLabel;
 
     public static GameManager instance;
-    private int _totalPeopleCount;
-    private int _availablePeopleCount;
+
+    private List<Person> totalPopulation = new List<Person>();
     private int _foodCount;
     private int _woodCount;
 
-    public int TotalPeopleCount
-    {
-        get => _totalPeopleCount;
-        set
-        {
-            _totalPeopleCount = Mathf.Max(value, 0);
-            TotalPeopleLabel.text = $"Total People: {_totalPeopleCount}";
-        }
-    }
-    public int AvailablePeopleCount
-    {
-        get => _availablePeopleCount;
-        set
-        {
-            _availablePeopleCount = Mathf.Max(value, 0);
-            AvailablePeopleLabel.text = $"Available People: {_availablePeopleCount}";
-        }
-    }
     public int FoodCount
     {
         get => _foodCount;
@@ -65,6 +47,28 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        var availablePopulation = totalPopulation.FindAll(p => p.Work == null);
+        SetPopulationLabel(availablePopulation.Count);
+    }
+
+    private void SetPopulationLabel(int availablePopulationCount)
+    {
+        TotalPeopleLabel.text = $"Total Population: {totalPopulation.Count}";
+        AvailablePeopleLabel.text = $"Available Population: {availablePopulationCount}";
+    }
+
+    public void AddPerson(Person p)
+    {
+        totalPopulation.Add(p);
+    }
+
+    public void RemovePerson(Person p)
+    {
+        totalPopulation.Remove(p);
+    }
+
+    public Person GetAvailablePerson()
+    {
+        return totalPopulation.Find(p => p.Work == null);
     }
 }
