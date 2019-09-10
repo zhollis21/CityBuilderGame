@@ -5,7 +5,7 @@ using UnityEngine;
 public class Person: MonoBehaviour
 {
     public House Home;
-    public GameObject Work;
+    public WorkPlace Work;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +21,10 @@ public class Person: MonoBehaviour
 
     public void Die()
     {
+        if (Work != null)
+            Work.Resign(this);
 
+        GameManager.instance.RemovePerson(this);
+        Destroy(gameObject);
     }
 }
