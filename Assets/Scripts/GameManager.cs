@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         get => _foodCount;
         set
         {
-            _foodCount = Mathf.Max(value, 0);
+            _foodCount = value; //Mathf.Max(value, 0);
             FoodLabel.text = $"Food: {_foodCount}";
         }
     }
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         get => _woodCount;
         set
         {
-            _woodCount = Mathf.Max(value, 0);
+            _woodCount = value; //Mathf.Max(value, 0);
             WoodLabel.text = $"Wood: {_woodCount}";
         }
     }

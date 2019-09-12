@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class Map : MonoBehaviour
         PreviewBuilding.transform.position = gridPosition;
 
         // The building must be within the map and the tile must be empty
-        if (gameMap.ContainsKey(gridPosition) && gameMap[gridPosition] == null)
+        if (gameMap.ContainsKey(gridPosition) && gameMap[gridPosition] == null && CanAffordBuilding(pendingBuilding, false))
         {
             previewRenderer.color = validPlacementColor;
 
@@ -91,10 +92,13 @@ public class Map : MonoBehaviour
 
     public void CreatePendingBuilding(Vector2 gridPosition)
     {
-        var building = Instantiate(pendingBuilding);
-        building.transform.position = gridPosition;
-        building.GetComponent<SpriteRenderer>().sortingOrder = buildingNumber++;
-        gameMap[gridPosition] = building;
+        if (CanAffordBuilding(pendingBuilding, true))
+        {
+            var building = Instantiate(pendingBuilding);
+            building.transform.position = gridPosition;
+            building.GetComponent<SpriteRenderer>().sortingOrder = buildingNumber++;
+            gameMap[gridPosition] = building;
+        }
 
         pendingBuilding = null;
         previewRenderer.sprite = null;
@@ -113,5 +117,35 @@ public class Map : MonoBehaviour
     public void AddWoodcutter()
     {
         SetPendingBuilding(WoodcutterPrefab);
+    }
+
+    private bool CanAffordBuilding(GameObject building, bool purchase)
+    {
+        // Eventually this logic should be offloaded to the buttons since we will want to show the amount in the UI anyways
+        if (building == HousePrefab)
+        {
+            bool canBuy = GameManager.instance.WoodCount >= 10;
+
+            if (canBuy && purchase)
+                GameManager.instance.WoodCount -= 10;
+
+            return canBuy;
+        }
+        else if (building == FarmPrefab)
+        {
+            bool canBuy = GameManager.instance.WoodCount >= 5;
+
+            if (canBuy && purchase)
+                GameManager.instance.WoodCount -= 5;
+
+            return canBuy;
+        }
+        else if (building == WoodcutterPrefab)
+        {
+            // ToDo: Add money system for buying Woodcutter
+            return true;
+        }
+        else
+            return false;
     }
 }
