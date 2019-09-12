@@ -11,7 +11,7 @@ public class WorkPlace : MonoBehaviour
     public WorkType WorkplaceType;
     public int WorkplaceLevel = 1;
     public int ProductionPerLevel = 1;
-    public int CycleTime = 3;
+    public int ProductionCycleTime = 3;
     public int MaxWorkers = 5;
 
     private float productionTimer = 0;
@@ -43,25 +43,25 @@ public class WorkPlace : MonoBehaviour
         workers.Remove(p);
     }
 
-    protected int GetAmountProduced()
+    private int GetAmountProduced()
     {
         int produceAmount = 0;
         float workerPercentage = workers.Count / (float)MaxWorkers;
         productionTimer += Time.deltaTime * workerPercentage;
 
-        if (productionTimer > CycleTime)
+        if (productionTimer > ProductionCycleTime)
         {
             produceAmount = ProductionPerLevel * WorkplaceLevel;
 
             productionTimer = 0;
         }
 
-        ProgressIndicator.normalizedValue = productionTimer / CycleTime;
+        ProgressIndicator.normalizedValue = productionTimer / ProductionCycleTime;
 
         return produceAmount;
     }
 
-    protected void BackfillPositions()
+    private void BackfillPositions()
     {
         while (workers.Count < MaxWorkers)
         {
@@ -77,5 +77,15 @@ public class WorkPlace : MonoBehaviour
                 return; // No point in looping if there are no more available workers
             }
         }
+    }
+
+    private void TerminateOperations()
+    {
+        foreach (var worker in workers)
+        {
+            worker.Work = null;
+        }
+
+        Destroy(gameObject);
     }
 }

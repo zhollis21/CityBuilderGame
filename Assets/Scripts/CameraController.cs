@@ -16,6 +16,9 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Temporarily disabling this while testing, as it's annoying when not in full screen
+        return;
+
         // ToDo: Update so it is slower at first and gets faster until max_speed
 
         Vector2 mousePosition = Input.mousePosition;

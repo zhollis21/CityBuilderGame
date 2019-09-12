@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
         if (instance != null)
             Destroy(this);
 
+        WoodCount = 20;
+        FoodCount = 20;
+
         instance = this;
     }
 
@@ -70,5 +73,10 @@ public class GameManager : MonoBehaviour
     public Person GetAvailablePerson()
     {
         return totalPopulation.Find(p => p.Work == null);
+    }
+
+    public bool HasFood()
+    {
+        return FoodCount > 0;
     }
 }

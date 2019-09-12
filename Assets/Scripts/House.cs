@@ -27,8 +27,14 @@ public class House : MonoBehaviour
         if (currentMaxResidents <= residents.Count)
             return;
 
-        spawnTimer -= Time.deltaTime;
-        if (spawnTimer < 0)
+        if (!GameManager.instance.HasFood())
+        {
+            spawnTimer = 0;
+            return;
+        }
+
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer > SPAWN_RATE)
         {
             var personObject = Instantiate(PersonPrefab, transform);
 
@@ -36,7 +42,12 @@ public class House : MonoBehaviour
             personScript.Home = this;
 
             residents.Add(personScript);
-            spawnTimer = SPAWN_RATE;
+            spawnTimer = 0;
         }
+    }
+
+    public void Runaway(Person p)
+    {
+        residents.Remove(p);
     }
 }
