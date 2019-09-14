@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class WorkPlace : MonoBehaviour
 {
-    public enum WorkType { Farm, Woodcutter}
+    public enum WorkType { Farm, Woodcutter }
 
     public Slider ProgressIndicator;
     public WorkType WorkplaceType;
@@ -63,19 +63,16 @@ public class WorkPlace : MonoBehaviour
 
     private void BackfillPositions()
     {
-        while (workers.Count < MaxWorkers)
-        {
-            var newWorker = GameManager.instance.GetAvailablePerson();
+        if (workers.Count < MaxWorkers)
+            GameManager.instance.AddWorkplaceToRecruiterQueue(this);
+    }
 
-            if (newWorker != null)
-            {
-                newWorker.Work = this;
-                workers.Add(newWorker);
-            }
-            else
-            {
-                return; // No point in looping if there are no more available workers
-            }
+    public void NewHire(Person newWorker)
+    {
+        if (newWorker != null)
+        {
+            newWorker.Work = this;
+            workers.Add(newWorker);
         }
     }
 

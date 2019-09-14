@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     private List<Person> totalPopulation = new List<Person>();
+    private List<Person> availablePopulation = new List<Person>();
+    private List<WorkPlace> recruiterQueue = new List<WorkPlace>();
     private int _foodCount;
     private int _woodCount;
 
@@ -21,7 +23,7 @@ public class GameManager : MonoBehaviour
         get => _foodCount;
         set
         {
-            _foodCount = value; //Mathf.Max(value, 0);
+            _foodCount = value; //Mathf.Max(value, 0); Testing if we ever go below zero
             FoodLabel.text = $"Food: {_foodCount}";
         }
     }
@@ -30,7 +32,7 @@ public class GameManager : MonoBehaviour
         get => _woodCount;
         set
         {
-            _woodCount = value; //Mathf.Max(value, 0);
+            _woodCount = value; //Mathf.Max(value, 0); Testing if we ever go below zero
             WoodLabel.text = $"Wood: {_woodCount}";
         }
     }
@@ -50,14 +52,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var availablePopulation = totalPopulation.FindAll(p => p.Work == null);
-        SetPopulationLabel(availablePopulation.Count);
+        availablePopulation = totalPopulation.FindAll(p => p.Work == null);
+        DistributeRecruits();
+        UpdatePopulationLabel();
     }
 
-    private void SetPopulationLabel(int availablePopulationCount)
+    private void UpdatePopulationLabel()
     {
         TotalPeopleLabel.text = $"Total Population: {totalPopulation.Count}";
-        AvailablePeopleLabel.text = $"Available Population: {availablePopulationCount}";
+        AvailablePeopleLabel.text = $"Available Population: {availablePopulation.Count}";
     }
 
     public void AddPerson(Person p)
@@ -70,9 +73,24 @@ public class GameManager : MonoBehaviour
         totalPopulation.Remove(p);
     }
 
-    public Person GetAvailablePerson()
+    public void AddWorkplaceToRecruiterQueue(WorkPlace workToAdd)
     {
-        return totalPopulation.Find(p => p.Work == null);
+        if (recruiterQueue.Find(w => w == workToAdd) == null)
+            recruiterQueue.Add(workToAdd);
+    }
+
+    public void DistributeRecruits()
+    {
+        while (recruiterQueue.Count > 0 && availablePopulation.Count > 0)
+        {
+            var workPlace = recruiterQueue[0];
+            var worker = availablePopulation[0];
+
+            workPlace.NewHire(worker);
+
+            recruiterQueue.Remove(workPlace);
+            availablePopulation.Remove(worker);
+        }
     }
 
     public bool HasFood()
