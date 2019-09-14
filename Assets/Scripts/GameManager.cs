@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text TotalPeopleLabel;
     public Text AvailablePeopleLabel;
     public Text FoodLabel;
     public Text WoodLabel;
@@ -59,8 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdatePopulationLabel()
     {
-        TotalPeopleLabel.text = $"Total Population: {totalPopulation.Count}";
-        AvailablePeopleLabel.text = $"Available Population: {availablePopulation.Count}";
+        AvailablePeopleLabel.text = $"Available Population: {availablePopulation.Count} / {totalPopulation.Count}";
     }
 
     public void AddPerson(Person p)
