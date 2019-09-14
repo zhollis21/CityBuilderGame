@@ -7,7 +7,7 @@ public class Person: MonoBehaviour
     public House Home;
     public WorkPlace Work;
 
-    private const int HUNGER_CYCLE_TIME = 10;
+    private const int HUNGER_CYCLE_TIME = 30;
     private float hungerTimer = 0;
 
     // Start is called before the first frame update
